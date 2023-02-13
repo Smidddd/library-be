@@ -1,4 +1,4 @@
-package com.example.umb.library;
+package sk.umb.example.library;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LibraryApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Hello world");
 		SpringApplication.run(LibraryApplication.class, args);
 	}
 
