@@ -1,0 +1,34 @@
+package sk.umb.example.library.category.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+
+@RestController
+public class CategoryController {
+    @GetMapping("/api/category/list")
+    public List listCategories(@RequestParam(required = false) String lastName){
+        System.out.println("List categories called");
+
+        return Collections.emptyList();
+    }
+    @GetMapping("/api/category/retrieve")
+    public List retrieveCategory(@RequestParam(required = false) String lastName){
+        System.out.println("Details of category called");
+
+        return Collections.emptyList();
+    }
+    @PostMapping("/api/category")
+    public void createCategory(){
+        System.out.println("Create category called");
+    }
+    @PutMapping("/api/category/{categoryId}")
+    public void updateCategory(@PathVariable Long categoryId){
+        System.out.println("Update category called ID: "+ categoryId);
+    }
+    @DeleteMapping("/api/category/{categoryId}")
+    public void deleteCategory(@PathVariable Long categoryId){
+        System.out.println("Delete category called ID: "+ categoryId);
+    }
+}
