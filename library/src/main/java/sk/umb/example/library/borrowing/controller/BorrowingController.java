@@ -1,33 +1,52 @@
 package sk.umb.example.library.borrowing.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sk.umb.example.library.book.service.BookService;
+import sk.umb.example.library.borrowing.service.BorrowingDetailDTO;
+import sk.umb.example.library.borrowing.service.BorrowingRequestDTO;
+import sk.umb.example.library.borrowing.service.BorrowingService;
+import sk.umb.example.library.customer.service.CustomerService;
 
 import java.util.Collections;
 import java.util.List;
 @RestController
 public class BorrowingController {
-    @GetMapping("/api/borrowing/list")
-    public List listBorrowings(@RequestParam(required = false) String Name){
-        System.out.println("List borrowing called");
+    @Autowired
+    private BorrowingService borrowingService;
+    @Autowired
+    private BookService bookService;
+    @Autowired
+    private CustomerService customerService;
 
-        return Collections.emptyList();
+    @GetMapping("/api/borrowings/list")
+    public List <BorrowingDetailDTO> listBorrowings(@RequestParam(required = false) Long borrowingId){
+        System.out.println("List borrowings called");
+        return borrowingService.getAllBorrowings();
     }
-    @GetMapping("/api/borrowing/retrieve")
-    public List retrieveBorrowings(@RequestParam(required = false) String Name){
+
+    @GetMapping("/api/borrowings/{borrowingId}")
+    public BorrowingDetailDTO retrieveBook(@PathVariable Long borrowingId){
         System.out.println("Details of borrowing called");
 
-        return Collections.emptyList();
+        return borrowingService.retrieveBorrowing(borrowingId);
     }
-    @PostMapping("/api/borrowing")
-    public void createBorrowing(){
+
+
+    @PostMapping("/api/borrowings")
+    public Long createBorrowing(@RequestBody BorrowingRequestDTO borrowingRequestDTO){
         System.out.println("Create borrowing called");
+        return borrowingService.createBorrowing(borrowingRequestDTO, bookService.retrieveBook(borrowingRequestDTO.getBookId()), customerService.getCustomerById(borrowingRequestDTO.getCustomerId()));
     }
-    @PutMapping("/api/borrowing/{borrowingId}")
-    public void updateBorrowing(@PathVariable Long borrowingId){
+
+    @PutMapping("/api/borrowings/{borrowingId}")
+    public void updateBorrowing(@PathVariable Long borrowingId, @RequestBody BorrowingRequestDTO borrowingRequestDTO){
         System.out.println("Update borrowing called ID: "+ borrowingId);
+        borrowingService.updateBorrowing(borrowingId, borrowingRequestDTO, bookService.retrieveBook(borrowingRequestDTO.getBookId()), customerService.getCustomerById(borrowingRequestDTO.getCustomerId()));
     }
-    @DeleteMapping("/api/borrowing/{borrowingId}")
-    public void deleteBorrowing(@PathVariable Long borrowingId){
+    @DeleteMapping("/api/borrowings/{borrowingId}")
+    public void deleteBook(@PathVariable Long borrowingId){
         System.out.println("Delete borrowing called ID: "+ borrowingId);
+        borrowingService.deleteBorrowing(borrowingId);
     }
 }
