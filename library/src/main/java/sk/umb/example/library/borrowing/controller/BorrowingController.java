@@ -19,7 +19,7 @@ public class BorrowingController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/api/borrowings/list")
+    @GetMapping("/api/borrowings")
     public List <BorrowingDetailDTO> listBorrowings(@RequestParam(required = false) Long borrowingId){
         System.out.println("List borrowings called");
         return borrowingService.getAllBorrowings();

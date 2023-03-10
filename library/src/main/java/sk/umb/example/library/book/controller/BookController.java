@@ -24,7 +24,7 @@ public class BookController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/api/books/list")
+    @GetMapping("/api/books")
     public List <BookDetailDTO> listBooks(@RequestParam(required = false) Long bookId){
         System.out.println("List book called");
         return bookId == null? bookService.getAllBooks()

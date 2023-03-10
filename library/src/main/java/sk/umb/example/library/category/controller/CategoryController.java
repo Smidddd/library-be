@@ -15,7 +15,7 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
-    @GetMapping("/api/category/list")
+    @GetMapping("/api/category")
     public List <CategoryDetailDTO> listCategories(@RequestParam(required = false) String name){
         System.out.println("List categories called");
 
