@@ -11,9 +11,9 @@ public class BookRequestDTO {
     private String title;
     private String isbn;
     private Long count;
-    List<Long> categoryIds=new ArrayList<Long>();
+    ArrayList<Long> categoryIds=new ArrayList<Long>();
 
-    public List<Long> getCategoryIds() {
+    public ArrayList<Long> getCategoryIds() {
         return categoryIds;
     }
 

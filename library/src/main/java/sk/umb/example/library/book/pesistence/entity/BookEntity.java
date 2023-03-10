@@ -1,10 +1,13 @@
-package sk.umb.example.library.book.service;
+package sk.umb.example.library.book.pesistence.entity;
 
-import java.lang.reflect.Array;
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 
-public class BookDetailDTO {
+
+@Entity
+public class BookEntity {
+    @GeneratedValue
+    @Id
     private Long bookId;
     private String authorFirstName;
     private String authorLastName;
@@ -12,8 +15,11 @@ public class BookDetailDTO {
     private String title;
     private String isbn;
     private Long count;
-
     private ArrayList<Long> categoryIds;
+    @ManyToMany
+    @JoinTable(name="category_book",
+            joinColumns=@JoinColumn(name="book_id"),
+            inverseJoinColumns=@JoinColumn(name="category_ids"))
 
     public ArrayList<Long> getCategoryIds() {
         return categoryIds;
