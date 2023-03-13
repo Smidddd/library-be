@@ -19,8 +19,7 @@ public class CustomerController {
     public List<CustomerDetailDTO> searchCustomer(@RequestParam(required = false) String lastName) {
         System.out.println("Search customer called.");
 
-        return Strings.isEmpty(lastName) ? customerService.getAllCustomers()
-                                         : customerService.searchCustomerByLastName(lastName);
+        return customerService.getAllCustomers();
     }
 
     @GetMapping("/api/customers/{customerId}")

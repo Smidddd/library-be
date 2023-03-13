@@ -2,80 +2,105 @@ package sk.umb.example.library.customer.service;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
+import sk.umb.example.library.customer.persistence.entity.CustomerEntity;
+import sk.umb.example.library.customer.persistence.repository.CustomerRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
-
 @Service
 public class CustomerService {
-    private final AtomicLong lastIndex = new AtomicLong(0);
+    private final CustomerRepository customerRepository;
 
-    private final Map<Long, CustomerDetailDTO> customerDatabase = new HashMap();
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     public List<CustomerDetailDTO> getAllCustomers() {
-        return new ArrayList<>(customerDatabase.values());
+        return mapToDto(customerRepository.findAll());
     }
 
-    public List<CustomerDetailDTO> searchCustomerByLastName(String lastName) {
-        return customerDatabase.values().stream()
-                                        .filter(dto -> lastName.equals(dto.getLastName()))
-                                        .toList();
-    }
 
     public CustomerDetailDTO getCustomerById(Long customerId) {
         validateCustomerExists(customerId);
-
-        return customerDatabase.get(customerId);
+        return mapToDto(customerRepository.findById(customerId).get());
     }
 
     public Long createCustomer(CustomerRequestDTO customerRequestDTO) {
-        CustomerDetailDTO customerDetailDTO = mapToCustomerDetailDTO(lastIndex.getAndIncrement(),
-                                                                     customerRequestDTO);
-
-        customerDatabase.put(customerDetailDTO.getId(), customerDetailDTO);
-
-        return customerDetailDTO.getId();
+        return customerRepository.save(mapToEntity(customerRequestDTO)).getId();
     }
 
-    private static CustomerDetailDTO mapToCustomerDetailDTO(Long index, CustomerRequestDTO customerRequestDTO) {
+    private List<CustomerDetailDTO> mapToDto(List<CustomerEntity> customerEntities) {
+        List<CustomerDetailDTO> dtos = new ArrayList<>();
+
+        for (CustomerEntity ce : customerEntities) {
+            CustomerDetailDTO dto = new CustomerDetailDTO();
+
+            dto.setId(ce.getId());
+            dto.setFirstName(ce.getFirstName());
+            dto.setLastName(ce.getLastName());
+            dto.setEmailContact(ce.getEmailContact());
+
+            dtos.add(dto);
+        }
+
+        return dtos;
+    }
+    private CustomerDetailDTO mapToDto(CustomerEntity customerEntity) {
         CustomerDetailDTO dto = new CustomerDetailDTO();
 
-        dto.setId(index);
-        dto.setLastName(customerRequestDTO.getLastName());
-        dto.setFirstName(customerRequestDTO.getFirstName());
-        dto.setEmailContact(customerRequestDTO.getEmailContact());
+        dto.setId(customerEntity.getId());
+        dto.setFirstName(customerEntity.getFirstName());
+        dto.setLastName(customerEntity.getLastName());
+        dto.setEmailContact(customerEntity.getEmailContact());
 
         return dto;
+    }
+
+    private CustomerEntity mapToEntity(CustomerRequestDTO dto) {
+        CustomerEntity ce = new CustomerEntity();
+
+        ce.setFirstName(dto.getFirstName());
+        ce.setLastName(dto.getLastName());
+        ce.setEmailContact(dto.getEmailContact());
+
+        return ce;
+    }
+    private CustomerEntity mapToEntity(CustomerDetailDTO dto) {
+        CustomerEntity ce = new CustomerEntity();
+
+        ce.setFirstName(dto.getFirstName());
+        ce.setLastName(dto.getLastName());
+        ce.setEmailContact(dto.getEmailContact());
+
+        return ce;
     }
 
     public void updateCustomer(Long customerId, CustomerRequestDTO customerRequestDTO) {
         validateCustomerExists(customerId);
 
-        CustomerDetailDTO customerDetailDTO = customerDatabase.get(customerId);
+        CustomerEntity customerEntity = customerRepository.findById(customerId).get();
 
         if (! Strings.isEmpty(customerRequestDTO.getFirstName())) {
-            customerDetailDTO.setFirstName(customerRequestDTO.getFirstName());
+            customerEntity.setFirstName(customerRequestDTO.getFirstName());
         }
 
         if (! Strings.isEmpty(customerRequestDTO.getLastName())) {
-            customerDetailDTO.setLastName(customerRequestDTO.getLastName());
+            customerEntity.setLastName(customerRequestDTO.getLastName());
         }
 
         if (! Strings.isEmpty(customerRequestDTO.getEmailContact())) {
-            customerDetailDTO.setEmailContact(customerRequestDTO.getEmailContact());
+            customerEntity.setEmailContact(customerRequestDTO.getEmailContact());
         }
+        customerRepository.save(customerEntity);
     }
 
     private void validateCustomerExists(Long customerId) {
-        if (! customerDatabase.containsKey(customerId)) {
+        if (! customerRepository.existsById(customerId)) {
             throw new IllegalArgumentException("CustomerId: " + customerId + " does not exists!");
         }
     }
 
     public void deleteCustomer(Long customerId) {
-        customerDatabase.remove(customerId);
+        customerRepository.deleteById(customerId);
     }
 }
