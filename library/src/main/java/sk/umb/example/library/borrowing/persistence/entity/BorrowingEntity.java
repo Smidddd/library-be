@@ -34,4 +34,19 @@ public class BorrowingEntity {
     @ManyToOne
     private BookEntity bookEntity;
 
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public BookEntity getBookEntity() {
+        return bookEntity;
+    }
+
+    public void setBookEntity(BookEntity bookEntity) {
+        this.bookEntity = bookEntity;
+    }
 }
