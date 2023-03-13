@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sk.umb.example.library.book.service.BookDetailDTO;
 import sk.umb.example.library.book.service.BookRequestDTO;
 import sk.umb.example.library.book.service.BookService;
+import sk.umb.example.library.category.persistence.entity.CategoryEntity;
 import sk.umb.example.library.category.service.CategoryRequestDTO;
 import sk.umb.example.library.category.service.CategoryService;
 import sk.umb.example.library.customer.service.CustomerDetailDTO;
@@ -15,6 +16,7 @@ import sk.umb.example.library.customer.service.CustomerService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class BookController {
@@ -27,20 +29,19 @@ public class BookController {
     @GetMapping("/api/books")
     public List <BookDetailDTO> listBooks(@RequestParam(required = false) Long bookId){
         System.out.println("List book called");
-        return bookId == null? bookService.getAllBooks()
-                                        : bookService.searchBookById(bookId);
+        return bookService.getAllBooks();
     }
 
     @GetMapping("/api/books/{bookId}")
     public BookDetailDTO retrieveBook(@PathVariable Long bookId){
         System.out.println("Details of book called");
-
-        return bookService.retrieveBook(bookId);
+        return bookService.searchBookById(bookId);
     }
 
     @PostMapping("/api/books")
     public Long createBook(@RequestBody BookRequestDTO bookRequestDTO){
         System.out.println("Create book called");
+
         return bookService.createBook(bookRequestDTO,categoryService.getAllCategories());
     }
 

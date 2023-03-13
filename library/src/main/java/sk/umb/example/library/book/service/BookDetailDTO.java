@@ -1,8 +1,11 @@
 package sk.umb.example.library.book.service;
 
+import sk.umb.example.library.category.persistence.entity.CategoryEntity;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class BookDetailDTO {
     private Long bookId;
@@ -13,13 +16,14 @@ public class BookDetailDTO {
     private String isbn;
     private Long count;
 
-    private ArrayList<Long> categoryIds;
+    private Set<CategoryEntity> categoryIds;
 
-    public ArrayList<Long> getCategoryIds() {
+
+    public Set<CategoryEntity> getCategoryIds() {
         return categoryIds;
     }
 
-    public void setCategoryIds(ArrayList<Long> categoryIds) {
+    public void setCategoryIds(Set<CategoryEntity> categoryIds) {
         this.categoryIds = categoryIds;
     }
 

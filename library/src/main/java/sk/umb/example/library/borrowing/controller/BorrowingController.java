@@ -36,13 +36,13 @@ public class BorrowingController {
     @PostMapping("/api/borrowings")
     public Long createBorrowing(@RequestBody BorrowingRequestDTO borrowingRequestDTO){
         System.out.println("Create borrowing called");
-        return borrowingService.createBorrowing(borrowingRequestDTO, bookService.retrieveBook(borrowingRequestDTO.getBookId()), customerService.getCustomerById(borrowingRequestDTO.getCustomerId()));
+        return borrowingService.createBorrowing(borrowingRequestDTO, bookService.searchBookById(borrowingRequestDTO.getBookId()), customerService.getCustomerById(borrowingRequestDTO.getCustomerId()));
     }
 
     @PutMapping("/api/borrowings/{borrowingId}")
     public void updateBorrowing(@PathVariable Long borrowingId, @RequestBody BorrowingRequestDTO borrowingRequestDTO){
         System.out.println("Update borrowing called ID: "+ borrowingId);
-        borrowingService.updateBorrowing(borrowingId, borrowingRequestDTO, bookService.retrieveBook(borrowingRequestDTO.getBookId()), customerService.getCustomerById(borrowingRequestDTO.getCustomerId()));
+        borrowingService.updateBorrowing(borrowingId, borrowingRequestDTO, bookService.searchBookById(borrowingRequestDTO.getBookId()), customerService.getCustomerById(borrowingRequestDTO.getCustomerId()));
     }
     @DeleteMapping("/api/borrowings/{borrowingId}")
     public void deleteBook(@PathVariable Long borrowingId){

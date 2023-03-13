@@ -1,7 +1,10 @@
 package sk.umb.example.library.book.pesistence.entity;
 
+import sk.umb.example.library.category.persistence.entity.CategoryEntity;
+
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 
 @Entity
@@ -15,17 +18,19 @@ public class BookEntity {
     private String title;
     private String isbn;
     private Long count;
-    private ArrayList<Long> categoryIds;
+
     @ManyToMany
     @JoinTable(name="category_book",
             joinColumns=@JoinColumn(name="book_id"),
             inverseJoinColumns=@JoinColumn(name="category_ids"))
+    private Set<CategoryEntity> categoryIds;
 
-    public ArrayList<Long> getCategoryIds() {
+
+    public Set<CategoryEntity> getCategoryIds() {
         return categoryIds;
     }
 
-    public void setCategoryIds(ArrayList<Long> categoryIds) {
+    public void setCategoryIds(Set<CategoryEntity> categoryIds) {
         this.categoryIds = categoryIds;
     }
 

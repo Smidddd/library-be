@@ -19,14 +19,13 @@ public class CategoryController {
     public List <CategoryDetailDTO> listCategories(@RequestParam(required = false) String name){
         System.out.println("List categories called");
 
-        return Strings.isEmpty(name)? categoryService.getAllCategories()
-                                    : categoryService.searchCategoryByName(name);
+        return categoryService.getAllCategories();
     }
     @GetMapping("/api/category/{categoryId}")
     public CategoryDetailDTO retrieveCategory(@PathVariable Long categoryId){
         System.out.println("Details of category called + ");
 
-        return categoryService.retrieveCategory(categoryId);
+        return categoryService.getCategorybyId(categoryId);
     }
     @PostMapping("/api/category")
     public Long createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO){
