@@ -65,15 +65,6 @@ public class CustomerService {
 
         return ce;
     }
-    private CustomerEntity mapToEntity(CustomerDetailDTO dto) {
-        CustomerEntity ce = new CustomerEntity();
-
-        ce.setFirstName(dto.getFirstName());
-        ce.setLastName(dto.getLastName());
-        ce.setEmailContact(dto.getEmailContact());
-
-        return ce;
-    }
 
     public void updateCustomer(Long customerId, CustomerRequestDTO customerRequestDTO) {
         validateCustomerExists(customerId);

@@ -1,26 +1,33 @@
 package sk.umb.example.library.book.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import sk.umb.example.library.book.pesistence.repository.BookRepository;
+import sk.umb.example.library.category.persistence.entity.CategoryEntity;
+import sk.umb.example.library.category.persistence.repository.CategoryRepository;
+import sk.umb.example.library.category.service.CategoryService;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class BookRequestDTO {
+
+    private CategoryService categoryService;
     private String authorFirstName;
     private String authorLastName;
 
     private String title;
     private String isbn;
     private Long count;
-    ArrayList<Long> categoryIds=new ArrayList<Long>();
+    private Long[] categoryIds;
 
-    public ArrayList<Long> getCategoryIds() {
+    public Long[] getCategoryIds() {
         return categoryIds;
     }
 
     public void setCategoryIds(Long categoryIds[]) {
-       for (int i=0;i<categoryIds.length;i++){
-           this.categoryIds.add(categoryIds[i]);
-       }
+        this.categoryIds = categoryIds;
     }
 
     public Long getCount() {
