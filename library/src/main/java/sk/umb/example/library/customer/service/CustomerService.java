@@ -66,7 +66,6 @@ public class CustomerService {
         return ce;
     }
 
-
     public void updateCustomer(Long customerId, CustomerRequestDTO customerRequestDTO) {
         validateCustomerExists(customerId);
 
